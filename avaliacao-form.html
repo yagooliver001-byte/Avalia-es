@@ -3,405 +3,347 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Avalie sua experiência</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<title>Virtus Company — Avalie sua experiência</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
   :root {
-    --ink: #1a1a2e;
-    --gold: #c9a84c;
-    --gold-light: #f0d080;
-    --cream: #faf7f2;
+    --ink: #0d0d0d;
+    --gold: #c9a050;
+    --gold-light: #e8c97a;
+    --gold-dim: rgba(201,160,80,0.12);
+    --bg: #111111;
+    --card-bg: #181818;
+    --surface: #212121;
     --white: #ffffff;
-    --gray: #888;
-    --border: #e8e2d9;
-    --success: #2d7a4f;
+    --text: #e0e0e0;
+    --muted: #888;
+    --border: #2e2e2e;
+    --success: #3a9e6a;
   }
 
   body {
     font-family: 'DM Sans', sans-serif;
-    background: var(--cream);
+    background: var(--bg);
     min-height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
     padding: 24px;
+    background-image: radial-gradient(ellipse at 70% 10%, rgba(201,160,80,0.06) 0%, transparent 60%);
   }
 
   .card {
-    background: var(--white);
-    border-radius: 24px;
-    max-width: 540px;
+    background: var(--card-bg);
+    border-radius: 20px;
+    max-width: 520px;
     width: 100%;
     overflow: hidden;
-    box-shadow: 0 20px 60px rgba(26,26,46,0.12);
+    box-shadow: 0 24px 80px rgba(0,0,0,0.6), 0 0 0 1px var(--border);
   }
 
   .card-header {
-    background: var(--ink);
-    padding: 40px 40px 32px;
+    background: #0d0d0d;
+    padding: 36px 40px 28px;
     text-align: center;
     position: relative;
     overflow: hidden;
-  }
-
-  .card-header::before {
-    content: '';
-    position: absolute;
-    top: -60px; right: -60px;
-    width: 180px; height: 180px;
-    border-radius: 50%;
-    background: rgba(201,168,76,0.15);
+    border-bottom: 1px solid var(--border);
   }
 
   .card-header::after {
     content: '';
     position: absolute;
-    bottom: -40px; left: -40px;
-    width: 120px; height: 120px;
-    border-radius: 50%;
-    background: rgba(201,168,76,0.1);
+    bottom: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
   }
 
-  .stars-icon {
-    font-size: 28px;
-    margin-bottom: 12px;
-    display: block;
+  .logo-wrap {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 18px;
+  }
+
+  .logo-wrap img {
+    height: 60px;
+    width: auto;
+    object-fit: contain;
+    filter: drop-shadow(0 2px 12px rgba(201,160,80,0.3));
   }
 
   .card-header h1 {
-    font-family: 'Playfair Display', serif;
+    font-family: 'Cormorant Garamond', serif;
     color: var(--white);
-    font-size: 26px;
-    font-weight: 700;
-    line-height: 1.2;
-    position: relative;
-    z-index: 1;
+    font-size: 24px;
+    font-weight: 600;
+    line-height: 1.3;
   }
 
   .card-header p {
-    color: rgba(255,255,255,0.6);
-    font-size: 14px;
-    margin-top: 8px;
-    position: relative;
-    z-index: 1;
-  }
-
-  .gold-line {
-    height: 3px;
-    background: linear-gradient(90deg, var(--gold), var(--gold-light), var(--gold));
+    color: var(--muted);
+    font-size: 13px;
+    margin-top: 6px;
   }
 
   .card-body {
-    padding: 36px 40px 40px;
+    padding: 32px 40px 36px;
   }
 
-  .field {
-    margin-bottom: 22px;
-  }
+  .field { margin-bottom: 20px; }
 
   label {
     display: block;
-    font-size: 13px;
+    font-size: 11px;
     font-weight: 500;
-    color: var(--ink);
+    color: var(--gold);
     margin-bottom: 8px;
-    letter-spacing: 0.03em;
+    letter-spacing: 0.1em;
     text-transform: uppercase;
   }
 
   input[type="text"] {
     width: 100%;
-    padding: 13px 16px;
-    border: 1.5px solid var(--border);
-    border-radius: 10px;
+    padding: 12px 16px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
     font-family: 'DM Sans', sans-serif;
-    font-size: 15px;
-    color: var(--ink);
-    background: var(--cream);
+    font-size: 14px;
+    color: var(--text);
+    background: var(--surface);
     transition: border-color 0.2s, box-shadow 0.2s;
     outline: none;
   }
 
   input[type="text"]:focus {
     border-color: var(--gold);
-    box-shadow: 0 0 0 3px rgba(201,168,76,0.15);
+    box-shadow: 0 0 0 3px rgba(201,160,80,0.1);
   }
 
-  .star-field label {
-    margin-bottom: 12px;
-  }
+  input[type="text"]::placeholder { color: #555; }
 
-  .stars {
-    display: flex;
-    gap: 8px;
-  }
+  .star-field label { margin-bottom: 12px; }
 
+  .stars { display: flex; gap: 6px; }
   .stars input { display: none; }
 
   .stars label {
-    font-size: 36px;
+    font-size: 34px;
     cursor: pointer;
-    color: #ddd;
+    color: #333;
     transition: color 0.15s, transform 0.15s;
     text-transform: none;
     letter-spacing: 0;
     line-height: 1;
   }
 
-  .stars label:hover,
-  .stars label.active {
-    color: var(--gold);
-  }
-
-  .stars label:hover {
-    transform: scale(1.2);
-  }
+  .stars label:hover, .stars label.active { color: var(--gold); }
+  .stars label:hover { transform: scale(1.2); }
 
   .aspects {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 10px;
+    gap: 8px;
   }
 
   .aspect-item {
     display: flex;
     align-items: center;
     gap: 8px;
-    padding: 11px 14px;
-    border: 1.5px solid var(--border);
-    border-radius: 10px;
+    padding: 10px 14px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
     cursor: pointer;
     transition: all 0.2s;
     font-size: 13px;
-    color: #555;
+    color: #888;
     user-select: none;
+    background: var(--surface);
   }
 
   .aspect-item input { display: none; }
-
-  .aspect-item:hover { border-color: var(--gold); color: var(--ink); }
+  .aspect-item:hover { border-color: var(--gold); color: var(--text); }
 
   .aspect-item.checked {
     border-color: var(--gold);
-    background: rgba(201,168,76,0.08);
-    color: var(--ink);
+    background: var(--gold-dim);
+    color: var(--gold-light);
     font-weight: 500;
   }
 
   .aspect-item .dot {
-    width: 16px; height: 16px;
-    border-radius: 4px;
-    border: 1.5px solid #ccc;
+    width: 15px; height: 15px;
+    border-radius: 3px;
+    border: 1px solid #444;
     flex-shrink: 0;
     display: flex; align-items: center; justify-content: center;
     transition: all 0.2s;
   }
 
-  .aspect-item.checked .dot {
-    background: var(--gold);
-    border-color: var(--gold);
-  }
-
-  .aspect-item.checked .dot::after {
-    content: '✓';
-    color: white;
-    font-size: 10px;
-    font-weight: 700;
-  }
+  .aspect-item.checked .dot { background: var(--gold); border-color: var(--gold); }
+  .aspect-item.checked .dot::after { content: '✓'; color: #0d0d0d; font-size: 9px; font-weight: 800; }
 
   textarea {
     width: 100%;
-    padding: 13px 16px;
-    border: 1.5px solid var(--border);
-    border-radius: 10px;
+    padding: 12px 16px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
     font-family: 'DM Sans', sans-serif;
-    font-size: 15px;
-    color: var(--ink);
-    background: var(--cream);
+    font-size: 14px;
+    color: var(--text);
+    background: var(--surface);
     resize: vertical;
-    min-height: 100px;
+    min-height: 95px;
     outline: none;
     transition: border-color 0.2s, box-shadow 0.2s;
   }
 
   textarea:focus {
     border-color: var(--gold);
-    box-shadow: 0 0 0 3px rgba(201,168,76,0.15);
+    box-shadow: 0 0 0 3px rgba(201,160,80,0.1);
   }
+
+  textarea::placeholder { color: #555; }
 
   .consent {
     display: flex;
     align-items: flex-start;
     gap: 10px;
     cursor: pointer;
-    margin-bottom: 24px;
+    margin-bottom: 22px;
   }
 
   .consent input { display: none; }
 
   .consent-box {
-    width: 18px; height: 18px;
-    border: 1.5px solid #ccc;
-    border-radius: 4px;
+    width: 17px; height: 17px;
+    border: 1px solid #444;
+    border-radius: 3px;
     flex-shrink: 0;
     margin-top: 2px;
     display: flex; align-items: center; justify-content: center;
     transition: all 0.2s;
   }
 
-  .consent.checked .consent-box {
-    background: var(--gold);
-    border-color: var(--gold);
-  }
+  .consent.checked .consent-box { background: var(--gold); border-color: var(--gold); }
+  .consent.checked .consent-box::after { content: '✓'; color: #0d0d0d; font-size: 10px; font-weight: 800; }
 
-  .consent.checked .consent-box::after {
-    content: '✓';
-    color: white;
-    font-size: 11px;
-    font-weight: 700;
-  }
-
-  .consent span {
-    font-size: 13px;
-    color: #777;
-    line-height: 1.5;
-  }
+  .consent span { font-size: 12px; color: #666; line-height: 1.5; }
 
   .btn-submit {
     width: 100%;
-    padding: 16px;
-    background: var(--ink);
-    color: white;
+    padding: 15px;
+    background: linear-gradient(135deg, #b8902a, var(--gold), #b8902a);
+    background-size: 200%;
+    color: #0d0d0d;
     border: none;
-    border-radius: 12px;
+    border-radius: 10px;
     font-family: 'DM Sans', sans-serif;
-    font-size: 15px;
-    font-weight: 500;
+    font-size: 14px;
+    font-weight: 600;
     cursor: pointer;
-    transition: background 0.2s, transform 0.1s;
-    position: relative;
-    overflow: hidden;
+    letter-spacing: 0.05em;
+    transition: background-position 0.4s, transform 0.1s, box-shadow 0.2s;
+    box-shadow: 0 4px 20px rgba(201,160,80,0.25);
   }
 
-  .btn-submit::before {
-    content: '';
-    position: absolute;
-    bottom: 0; left: 0;
-    width: 100%; height: 3px;
-    background: linear-gradient(90deg, var(--gold), var(--gold-light));
+  .btn-submit:hover {
+    background-position: right;
+    box-shadow: 0 6px 28px rgba(201,160,80,0.4);
   }
 
-  .btn-submit:hover { background: #2d2d50; }
   .btn-submit:active { transform: scale(0.99); }
 
-  /* SUCCESS STATE */
+  /* SUCCESS */
   .success-screen {
     display: none;
     text-align: center;
-    padding: 60px 40px;
+    padding: 56px 40px;
   }
 
   .success-icon {
-    width: 72px; height: 72px;
-    background: rgba(45,122,79,0.1);
+    width: 64px; height: 64px;
+    background: rgba(58,158,106,0.12);
+    border: 1px solid rgba(58,158,106,0.3);
     border-radius: 50%;
     display: flex; align-items: center; justify-content: center;
     margin: 0 auto 20px;
-    font-size: 32px;
+    font-size: 28px;
+    color: var(--success);
   }
 
   .success-screen h2 {
-    font-family: 'Playfair Display', serif;
-    color: var(--ink);
-    font-size: 24px;
+    font-family: 'Cormorant Garamond', serif;
+    color: var(--white);
+    font-size: 22px;
     margin-bottom: 10px;
   }
 
-  .success-screen p {
-    color: var(--gray);
-    font-size: 15px;
-    line-height: 1.6;
-  }
+  .success-screen p { color: var(--muted); font-size: 14px; line-height: 1.7; }
 
-  /* ADMIN PANEL */
+  /* ADMIN */
   .admin-toggle {
     text-align: center;
-    padding: 12px;
+    padding: 10px;
     border-top: 1px solid var(--border);
   }
 
   .admin-toggle button {
-    background: none;
-    border: none;
-    font-size: 12px;
-    color: #bbb;
-    cursor: pointer;
-    font-family: 'DM Sans', sans-serif;
+    background: none; border: none;
+    font-size: 11px; color: #444;
+    cursor: pointer; font-family: 'DM Sans', sans-serif;
+    letter-spacing: 0.05em;
   }
 
   .admin-panel {
     display: none;
-    padding: 24px 40px 32px;
+    padding: 22px 40px 28px;
     border-top: 1px solid var(--border);
-    background: #f9f9f9;
+    background: #141414;
   }
 
   .admin-panel h3 {
-    font-family: 'Playfair Display', serif;
-    font-size: 16px;
-    color: var(--ink);
-    margin-bottom: 16px;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 15px;
+    color: var(--gold);
+    margin-bottom: 14px;
   }
 
-  .qr-container {
-    display: flex;
-    align-items: center;
-    gap: 20px;
-    flex-wrap: wrap;
-  }
+  .qr-container { display: flex; align-items: center; gap: 18px; flex-wrap: wrap; }
 
   #qrcode canvas, #qrcode img {
-    border-radius: 8px;
-    border: 6px solid white;
-    box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+    border-radius: 6px;
+    border: 5px solid #1e1e1e;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.4);
   }
 
-  .qr-info {
-    flex: 1;
-    min-width: 180px;
-  }
-
-  .qr-info p {
-    font-size: 13px;
-    color: #666;
-    line-height: 1.6;
-    margin-bottom: 12px;
-  }
+  .qr-info { flex: 1; min-width: 160px; }
+  .qr-info p { font-size: 12px; color: #666; line-height: 1.6; margin-bottom: 10px; }
 
   .copy-link-btn {
-    padding: 9px 18px;
-    background: var(--ink);
-    color: white;
+    padding: 8px 16px;
+    background: var(--gold);
+    color: #0d0d0d;
     border: none;
-    border-radius: 8px;
-    font-size: 13px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 600;
     cursor: pointer;
     font-family: 'DM Sans', sans-serif;
-    transition: background 0.2s;
+    transition: opacity 0.2s;
   }
 
-  .copy-link-btn:hover { background: #2d2d50; }
-
-  .copy-success { color: var(--success); font-size: 13px; margin-top: 8px; display: none; }
+  .copy-link-btn:hover { opacity: 0.85; }
+  .copy-success { color: var(--success); font-size: 12px; margin-top: 7px; display: none; }
 
   @media (max-width: 480px) {
-    .card-body { padding: 28px 24px 32px; }
-    .card-header { padding: 32px 24px 24px; }
+    .card-body { padding: 24px 22px 28px; }
+    .card-header { padding: 28px 22px 22px; }
     .aspects { grid-template-columns: 1fr; }
-    .admin-panel { padding: 20px 24px 28px; }
+    .admin-panel { padding: 18px 22px 24px; }
   }
 </style>
 </head>
@@ -409,11 +351,12 @@
 
 <div class="card">
   <div class="card-header">
-    <span class="stars-icon">✦</span>
+    <div class="logo-wrap">
+      <img id="logoImg" alt="Virtus Company">
+    </div>
     <h1>Como foi sua experiência?</h1>
     <p>Sua opinião é muito importante para nós</p>
   </div>
-  <div class="gold-line"></div>
 
   <div class="card-body" id="formArea">
     <div class="field">
@@ -435,30 +378,12 @@
     <div class="field">
       <label>O que você mais gostou?</label>
       <div class="aspects" id="aspects">
-        <label class="aspect-item">
-          <input type="checkbox" value="Atendimento">
-          <span class="dot"></span> Atendimento
-        </label>
-        <label class="aspect-item">
-          <input type="checkbox" value="Qualidade">
-          <span class="dot"></span> Qualidade
-        </label>
-        <label class="aspect-item">
-          <input type="checkbox" value="Prazo">
-          <span class="dot"></span> Prazo / Entrega
-        </label>
-        <label class="aspect-item">
-          <input type="checkbox" value="Preço">
-          <span class="dot"></span> Preço / Custo
-        </label>
-        <label class="aspect-item">
-          <input type="checkbox" value="Criatividade">
-          <span class="dot"></span> Criatividade
-        </label>
-        <label class="aspect-item">
-          <input type="checkbox" value="Comunicação">
-          <span class="dot"></span> Comunicação
-        </label>
+        <label class="aspect-item"><input type="checkbox" value="Atendimento"><span class="dot"></span> Atendimento</label>
+        <label class="aspect-item"><input type="checkbox" value="Qualidade"><span class="dot"></span> Qualidade</label>
+        <label class="aspect-item"><input type="checkbox" value="Prazo"><span class="dot"></span> Prazo / Entrega</label>
+        <label class="aspect-item"><input type="checkbox" value="Preço"><span class="dot"></span> Preço / Custo</label>
+        <label class="aspect-item"><input type="checkbox" value="Criatividade"><span class="dot"></span> Criatividade</label>
+        <label class="aspect-item"><input type="checkbox" value="Comunicação"><span class="dot"></span> Comunicação</label>
       </div>
     </div>
 
@@ -470,7 +395,7 @@
     <label class="consent" id="consentLabel">
       <input type="checkbox" id="consentCheck">
       <span class="consent-box"></span>
-      <span>Autorizo o uso do meu nome e comentário no site desta empresa para fins de divulgação.</span>
+      <span>Autorizo o uso do meu nome e comentário no site da Virtus Company para fins de divulgação.</span>
     </label>
 
     <button class="btn-submit" onclick="submitForm()">Enviar avaliação →</button>
@@ -479,7 +404,7 @@
   <div class="success-screen" id="successScreen">
     <div class="success-icon">✓</div>
     <h2>Obrigado pela avaliação!</h2>
-    <p>Sua opinião foi registrada com sucesso.<br>Isso nos ajuda a melhorar cada vez mais.</p>
+    <p>Sua opinião foi registrada com sucesso.<br>Isso nos ajuda a crescer cada vez mais.</p>
   </div>
 
   <div class="admin-toggle">
@@ -500,59 +425,46 @@
 </div>
 
 <script>
+  // Inject logo
+  document.getElementById('logoImg').src = 'data:image/png;base64,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';
+
   // --- Star Rating ---
   let selectedStars = 0;
   const starLabels = document.querySelectorAll('#starRating label');
-
   starLabels.forEach((lbl, idx) => {
     lbl.addEventListener('mouseenter', () => highlightStars(idx + 1));
     lbl.addEventListener('mouseleave', () => highlightStars(selectedStars));
     lbl.addEventListener('click', () => { selectedStars = idx + 1; highlightStars(selectedStars); });
   });
-
   function highlightStars(n) {
     starLabels.forEach((lbl, i) => lbl.classList.toggle('active', i < n));
   }
 
-  // --- Checkboxes ---
   document.querySelectorAll('.aspect-item').forEach(item => {
     item.addEventListener('click', () => item.classList.toggle('checked'));
   });
 
-  // --- Consent ---
   document.getElementById('consentLabel').addEventListener('click', function() {
     this.classList.toggle('checked');
   });
 
-  // --- Submit ---
   function submitForm() {
     const name = document.getElementById('clientName').value.trim();
     const comment = document.getElementById('comment').value.trim();
     const consent = document.getElementById('consentLabel').classList.contains('checked');
-
     if (!name) { alert('Por favor, informe seu nome.'); return; }
     if (!selectedStars) { alert('Por favor, selecione uma nota.'); return; }
     if (!comment) { alert('Por favor, escreva um comentário.'); return; }
     if (!consent) { alert('Por favor, autorize o uso da avaliação para continuar.'); return; }
-
     const aspects = [...document.querySelectorAll('.aspect-item.checked input')].map(i => i.value);
-
-    const review = {
-      name, stars: selectedStars, aspects, comment,
-      date: new Date().toLocaleDateString('pt-BR'),
-      timestamp: Date.now()
-    };
-
-    // Save to localStorage (for demo — in production, send to a backend)
+    const review = { name, stars: selectedStars, aspects, comment, date: new Date().toLocaleDateString('pt-BR'), timestamp: Date.now() };
     const reviews = JSON.parse(localStorage.getItem('reviews') || '[]');
     reviews.push(review);
     localStorage.setItem('reviews', JSON.stringify(reviews));
-
     document.getElementById('formArea').style.display = 'none';
     document.getElementById('successScreen').style.display = 'block';
   }
 
-  // --- Admin Panel ---
   function toggleAdmin() {
     const panel = document.getElementById('adminPanel');
     const visible = panel.style.display === 'block';
@@ -563,12 +475,7 @@
   function generateQR() {
     const container = document.getElementById('qrcode');
     if (container.innerHTML !== '') return;
-    new QRCode(container, {
-      text: window.location.href,
-      width: 110, height: 110,
-      colorDark: '#1a1a2e', colorLight: '#ffffff',
-      correctLevel: QRCode.CorrectLevel.H
-    });
+    new QRCode(container, { text: window.location.href, width: 108, height: 108, colorDark: '#0d0d0d', colorLight: '#ffffff', correctLevel: QRCode.CorrectLevel.H });
   }
 
   function copyLink() {

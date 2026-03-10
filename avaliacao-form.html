@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Avalie sua experiência</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --ink: #1a1a2e;
+    --gold: #c9a84c;
+    --gold-light: #f0d080;
+    --cream: #faf7f2;
+    --white: #ffffff;
+    --gray: #888;
+    --border: #e8e2d9;
+    --success: #2d7a4f;
+  }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--cream);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+  }
+
+  .card {
+    background: var(--white);
+    border-radius: 24px;
+    max-width: 540px;
+    width: 100%;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(26,26,46,0.12);
+  }
+
+  .card-header {
+    background: var(--ink);
+    padding: 40px 40px 32px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .card-header::before {
+    content: '';
+    position: absolute;
+    top: -60px; right: -60px;
+    width: 180px; height: 180px;
+    border-radius: 50%;
+    background: rgba(201,168,76,0.15);
+  }
+
+  .card-header::after {
+    content: '';
+    position: absolute;
+    bottom: -40px; left: -40px;
+    width: 120px; height: 120px;
+    border-radius: 50%;
+    background: rgba(201,168,76,0.1);
+  }
+
+  .stars-icon {
+    font-size: 28px;
+    margin-bottom: 12px;
+    display: block;
+  }
+
+  .card-header h1 {
+    font-family: 'Playfair Display', serif;
+    color: var(--white);
+    font-size: 26px;
+    font-weight: 700;
+    line-height: 1.2;
+    position: relative;
+    z-index: 1;
+  }
+
+  .card-header p {
+    color: rgba(255,255,255,0.6);
+    font-size: 14px;
+    margin-top: 8px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .gold-line {
+    height: 3px;
+    background: linear-gradient(90deg, var(--gold), var(--gold-light), var(--gold));
+  }
+
+  .card-body {
+    padding: 36px 40px 40px;
+  }
+
+  .field {
+    margin-bottom: 22px;
+  }
+
+  label {
+    display: block;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--ink);
+    margin-bottom: 8px;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+  }
+
+  input[type="text"] {
+    width: 100%;
+    padding: 13px 16px;
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    color: var(--ink);
+    background: var(--cream);
+    transition: border-color 0.2s, box-shadow 0.2s;
+    outline: none;
+  }
+
+  input[type="text"]:focus {
+    border-color: var(--gold);
+    box-shadow: 0 0 0 3px rgba(201,168,76,0.15);
+  }
+
+  .star-field label {
+    margin-bottom: 12px;
+  }
+
+  .stars {
+    display: flex;
+    gap: 8px;
+  }
+
+  .stars input { display: none; }
+
+  .stars label {
+    font-size: 36px;
+    cursor: pointer;
+    color: #ddd;
+    transition: color 0.15s, transform 0.15s;
+    text-transform: none;
+    letter-spacing: 0;
+    line-height: 1;
+  }
+
+  .stars label:hover,
+  .stars label.active {
+    color: var(--gold);
+  }
+
+  .stars label:hover {
+    transform: scale(1.2);
+  }
+
+  .aspects {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+
+  .aspect-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 11px 14px;
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-size: 13px;
+    color: #555;
+    user-select: none;
+  }
+
+  .aspect-item input { display: none; }
+
+  .aspect-item:hover { border-color: var(--gold); color: var(--ink); }
+
+  .aspect-item.checked {
+    border-color: var(--gold);
+    background: rgba(201,168,76,0.08);
+    color: var(--ink);
+    font-weight: 500;
+  }
+
+  .aspect-item .dot {
+    width: 16px; height: 16px;
+    border-radius: 4px;
+    border: 1.5px solid #ccc;
+    flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.2s;
+  }
+
+  .aspect-item.checked .dot {
+    background: var(--gold);
+    border-color: var(--gold);
+  }
+
+  .aspect-item.checked .dot::after {
+    content: '✓';
+    color: white;
+    font-size: 10px;
+    font-weight: 700;
+  }
+
+  textarea {
+    width: 100%;
+    padding: 13px 16px;
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    color: var(--ink);
+    background: var(--cream);
+    resize: vertical;
+    min-height: 100px;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+
+  textarea:focus {
+    border-color: var(--gold);
+    box-shadow: 0 0 0 3px rgba(201,168,76,0.15);
+  }
+
+  .consent {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    cursor: pointer;
+    margin-bottom: 24px;
+  }
+
+  .consent input { display: none; }
+
+  .consent-box {
+    width: 18px; height: 18px;
+    border: 1.5px solid #ccc;
+    border-radius: 4px;
+    flex-shrink: 0;
+    margin-top: 2px;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.2s;
+  }
+
+  .consent.checked .consent-box {
+    background: var(--gold);
+    border-color: var(--gold);
+  }
+
+  .consent.checked .consent-box::after {
+    content: '✓';
+    color: white;
+    font-size: 11px;
+    font-weight: 700;
+  }
+
+  .consent span {
+    font-size: 13px;
+    color: #777;
+    line-height: 1.5;
+  }
+
+  .btn-submit {
+    width: 100%;
+    padding: 16px;
+    background: var(--ink);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .btn-submit::before {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0;
+    width: 100%; height: 3px;
+    background: linear-gradient(90deg, var(--gold), var(--gold-light));
+  }
+
+  .btn-submit:hover { background: #2d2d50; }
+  .btn-submit:active { transform: scale(0.99); }
+
+  /* SUCCESS STATE */
+  .success-screen {
+    display: none;
+    text-align: center;
+    padding: 60px 40px;
+  }
+
+  .success-icon {
+    width: 72px; height: 72px;
+    background: rgba(45,122,79,0.1);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 20px;
+    font-size: 32px;
+  }
+
+  .success-screen h2 {
+    font-family: 'Playfair Display', serif;
+    color: var(--ink);
+    font-size: 24px;
+    margin-bottom: 10px;
+  }
+
+  .success-screen p {
+    color: var(--gray);
+    font-size: 15px;
+    line-height: 1.6;
+  }
+
+  /* ADMIN PANEL */
+  .admin-toggle {
+    text-align: center;
+    padding: 12px;
+    border-top: 1px solid var(--border);
+  }
+
+  .admin-toggle button {
+    background: none;
+    border: none;
+    font-size: 12px;
+    color: #bbb;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .admin-panel {
+    display: none;
+    padding: 24px 40px 32px;
+    border-top: 1px solid var(--border);
+    background: #f9f9f9;
+  }
+
+  .admin-panel h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 16px;
+    color: var(--ink);
+    margin-bottom: 16px;
+  }
+
+  .qr-container {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+
+  #qrcode canvas, #qrcode img {
+    border-radius: 8px;
+    border: 6px solid white;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+  }
+
+  .qr-info {
+    flex: 1;
+    min-width: 180px;
+  }
+
+  .qr-info p {
+    font-size: 13px;
+    color: #666;
+    line-height: 1.6;
+    margin-bottom: 12px;
+  }
+
+  .copy-link-btn {
+    padding: 9px 18px;
+    background: var(--ink);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 13px;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    transition: background 0.2s;
+  }
+
+  .copy-link-btn:hover { background: #2d2d50; }
+
+  .copy-success { color: var(--success); font-size: 13px; margin-top: 8px; display: none; }
+
+  @media (max-width: 480px) {
+    .card-body { padding: 28px 24px 32px; }
+    .card-header { padding: 32px 24px 24px; }
+    .aspects { grid-template-columns: 1fr; }
+    .admin-panel { padding: 20px 24px 28px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="card">
+  <div class="card-header">
+    <span class="stars-icon">✦</span>
+    <h1>Como foi sua experiência?</h1>
+    <p>Sua opinião é muito importante para nós</p>
+  </div>
+  <div class="gold-line"></div>
+
+  <div class="card-body" id="formArea">
+    <div class="field">
+      <label>Seu nome</label>
+      <input type="text" id="clientName" placeholder="Ex: Maria Silva">
+    </div>
+
+    <div class="field star-field">
+      <label>Nota geral</label>
+      <div class="stars" id="starRating">
+        <label data-val="1">★</label>
+        <label data-val="2">★</label>
+        <label data-val="3">★</label>
+        <label data-val="4">★</label>
+        <label data-val="5">★</label>
+      </div>
+    </div>
+
+    <div class="field">
+      <label>O que você mais gostou?</label>
+      <div class="aspects" id="aspects">
+        <label class="aspect-item">
+          <input type="checkbox" value="Atendimento">
+          <span class="dot"></span> Atendimento
+        </label>
+        <label class="aspect-item">
+          <input type="checkbox" value="Qualidade">
+          <span class="dot"></span> Qualidade
+        </label>
+        <label class="aspect-item">
+          <input type="checkbox" value="Prazo">
+          <span class="dot"></span> Prazo / Entrega
+        </label>
+        <label class="aspect-item">
+          <input type="checkbox" value="Preço">
+          <span class="dot"></span> Preço / Custo
+        </label>
+        <label class="aspect-item">
+          <input type="checkbox" value="Criatividade">
+          <span class="dot"></span> Criatividade
+        </label>
+        <label class="aspect-item">
+          <input type="checkbox" value="Comunicação">
+          <span class="dot"></span> Comunicação
+        </label>
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Seu comentário</label>
+      <textarea id="comment" placeholder="Conta um pouco sobre sua experiência..."></textarea>
+    </div>
+
+    <label class="consent" id="consentLabel">
+      <input type="checkbox" id="consentCheck">
+      <span class="consent-box"></span>
+      <span>Autorizo o uso do meu nome e comentário no site desta empresa para fins de divulgação.</span>
+    </label>
+
+    <button class="btn-submit" onclick="submitForm()">Enviar avaliação →</button>
+  </div>
+
+  <div class="success-screen" id="successScreen">
+    <div class="success-icon">✓</div>
+    <h2>Obrigado pela avaliação!</h2>
+    <p>Sua opinião foi registrada com sucesso.<br>Isso nos ajuda a melhorar cada vez mais.</p>
+  </div>
+
+  <div class="admin-toggle">
+    <button onclick="toggleAdmin()">⚙ painel do proprietário</button>
+  </div>
+
+  <div class="admin-panel" id="adminPanel">
+    <h3>📎 Compartilhar formulário</h3>
+    <div class="qr-container">
+      <div id="qrcode"></div>
+      <div class="qr-info">
+        <p>Imprima o QR Code ou copie o link para enviar pelo WhatsApp ou e-mail.</p>
+        <button class="copy-link-btn" onclick="copyLink()">Copiar link</button>
+        <p class="copy-success" id="copySuccess">✓ Link copiado!</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // --- Star Rating ---
+  let selectedStars = 0;
+  const starLabels = document.querySelectorAll('#starRating label');
+
+  starLabels.forEach((lbl, idx) => {
+    lbl.addEventListener('mouseenter', () => highlightStars(idx + 1));
+    lbl.addEventListener('mouseleave', () => highlightStars(selectedStars));
+    lbl.addEventListener('click', () => { selectedStars = idx + 1; highlightStars(selectedStars); });
+  });
+
+  function highlightStars(n) {
+    starLabels.forEach((lbl, i) => lbl.classList.toggle('active', i < n));
+  }
+
+  // --- Checkboxes ---
+  document.querySelectorAll('.aspect-item').forEach(item => {
+    item.addEventListener('click', () => item.classList.toggle('checked'));
+  });
+
+  // --- Consent ---
+  document.getElementById('consentLabel').addEventListener('click', function() {
+    this.classList.toggle('checked');
+  });
+
+  // --- Submit ---
+  function submitForm() {
+    const name = document.getElementById('clientName').value.trim();
+    const comment = document.getElementById('comment').value.trim();
+    const consent = document.getElementById('consentLabel').classList.contains('checked');
+
+    if (!name) { alert('Por favor, informe seu nome.'); return; }
+    if (!selectedStars) { alert('Por favor, selecione uma nota.'); return; }
+    if (!comment) { alert('Por favor, escreva um comentário.'); return; }
+    if (!consent) { alert('Por favor, autorize o uso da avaliação para continuar.'); return; }
+
+    const aspects = [...document.querySelectorAll('.aspect-item.checked input')].map(i => i.value);
+
+    const review = {
+      name, stars: selectedStars, aspects, comment,
+      date: new Date().toLocaleDateString('pt-BR'),
+      timestamp: Date.now()
+    };
+
+    // Save to localStorage (for demo — in production, send to a backend)
+    const reviews = JSON.parse(localStorage.getItem('reviews') || '[]');
+    reviews.push(review);
+    localStorage.setItem('reviews', JSON.stringify(reviews));
+
+    document.getElementById('formArea').style.display = 'none';
+    document.getElementById('successScreen').style.display = 'block';
+  }
+
+  // --- Admin Panel ---
+  function toggleAdmin() {
+    const panel = document.getElementById('adminPanel');
+    const visible = panel.style.display === 'block';
+    panel.style.display = visible ? 'none' : 'block';
+    if (!visible) generateQR();
+  }
+
+  function generateQR() {
+    const container = document.getElementById('qrcode');
+    if (container.innerHTML !== '') return;
+    new QRCode(container, {
+      text: window.location.href,
+      width: 110, height: 110,
+      colorDark: '#1a1a2e', colorLight: '#ffffff',
+      correctLevel: QRCode.CorrectLevel.H
+    });
+  }
+
+  function copyLink() {
+    navigator.clipboard.writeText(window.location.href).then(() => {
+      document.getElementById('copySuccess').style.display = 'block';
+      setTimeout(() => document.getElementById('copySuccess').style.display = 'none', 2500);
+    });
+  }
+</script>
+</body>
+</html>
